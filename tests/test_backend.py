@@ -3873,7 +3873,7 @@ class BackendTests(Tf2OnnxBackendTestBase):
             logits_val = np.random.random(data_shape).astype(np.float32)
 
             def func(label, logits):
-                res1 = tf.nn.softmax_cross_entropy_with_logits_v2(labels=label, logits=logits)
+                res1 = tf.nn.softmax_cross_entropy_with_logits(labels=label, logits=logits)
                 return tf.identity(res1, name=_TFOUTPUT)
             self._run_test_case(func, [_OUTPUT], {_INPUT: label_val, _INPUT1: logits_val}, atol=1e-5)
 
@@ -4938,7 +4938,7 @@ class BackendTests(Tf2OnnxBackendTestBase):
                           2., 1., 1., 3., 3., 1.],
                          dtype=np.float32).reshape((1, 2, 3, 2, 2))
         def func(x):
-            x_ = tf.matrix_determinant(x)
+            x_ = tf.linalg.det(x)
             return tf.identity(x_, name=_TFOUTPUT)
         self._run_test_case(func, [_OUTPUT], {_INPUT: x_val})
 
